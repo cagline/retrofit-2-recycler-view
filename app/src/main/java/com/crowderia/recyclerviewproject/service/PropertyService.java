@@ -1,4 +1,4 @@
-package com.crowderia.recyclerviewproject.service.remote;
+package com.crowderia.recyclerviewproject.service;
 
 /**
  * Created by crowderia on 8/29/17.

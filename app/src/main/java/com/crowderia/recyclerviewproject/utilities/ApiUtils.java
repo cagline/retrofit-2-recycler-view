@@ -1,7 +1,7 @@
 package com.crowderia.recyclerviewproject.utilities;
 
-import com.crowderia.recyclerviewproject.service.remote.PropertyService;
-import com.crowderia.recyclerviewproject.service.remote.RetrofitClient;
+import com.crowderia.recyclerviewproject.service.PropertyService;
+import com.crowderia.recyclerviewproject.service.RetrofitClient;
 
 /**
  * Created by crowderia on 8/29/17.

@@ -1,8 +1,10 @@
-package com.crowderia.recyclerviewproject;
+package com.crowderia.recyclerviewproject.model;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import com.crowderia.recyclerviewproject.model.Property;
+
+import com.crowderia.recyclerviewproject.R;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +26,37 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
     private List<Property> mItems ;
     private Context context;
 
-    public PropertyAdapter(List<Property> mItems, Context context) {
+    private PostItemListener mItemListener;
+
+    // ========== ViewHolder start ==========
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        public TextView textViewHead;
+        public TextView textViewDesc;
+        public ImageView imageView;
+        public LinearLayout linearLayout;
+        PostItemListener mItemListener;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            textViewHead = (TextView) itemView.findViewById(R.id.textViewHead);
+            textViewDesc = (TextView) itemView.findViewById(R.id.textViewDesc);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Property property = getItem(getAdapterPosition());
+            this.mItemListener.onPostClick(property.getId());
+            notifyDataSetChanged();
+        }
+    }
+    // ========== ViewHolder end ==========
+
+
+    public PropertyAdapter(Context context, List<Property> mItems, PostItemListener itemListener) {
         this.mItems = mItems;
         this.context = context;
     }
@@ -59,26 +91,20 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
         return mItems.size();
     }
 
+
+
+
     public void updateProperties(List<Property> items) {
         mItems = items;
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
-        public TextView textViewHead;
-        public TextView textViewDesc;
-        public ImageView imageView;
-        public LinearLayout linearLayout;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            textViewHead = (TextView) itemView.findViewById(R.id.textViewHead);
-            textViewDesc = (TextView) itemView.findViewById(R.id.textViewDesc);
-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
-
-        }
+    private Property getItem(int adapterPosition) {
+        return mItems.get(adapterPosition);
     }
+
+    public interface PostItemListener {
+        void onPostClick(long id);
+    }
+
 }
