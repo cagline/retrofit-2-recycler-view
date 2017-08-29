@@ -53,9 +53,7 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
             public void onPostClick(long id) {
                 Toast.makeText(MainActivity.this, "Post id is" + id, Toast.LENGTH_SHORT).show();
             }
-        });
-
-//        mPropertyController = new PropertyController(MainActivity.this);
+        });    
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
@@ -63,41 +61,18 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
-
+        
+        mPropertyController = new PropertyController(MainActivity.this);
         loadRecyclerViewData();
-
+        mPropertyController.startFetching();
+        
     }
 
     private void loadRecyclerViewData() {
         final ProgressDialog progressDaialog = new ProgressDialog(this);
         progressDaialog.setMessage("Loading Data");
         progressDaialog.show();
-
-        mPropertyController.startFetching();
-
         Log.d("fetching","mPropertyController.startFetching");
-
-//        mService.getProperties().enqueue(new Callback<PropertyResponse>() {
-//            @Override
-//            public void onResponse(Call<PropertyResponse> call, Response<PropertyResponse> response) {
-//
-//                if(response.isSuccessful()) {
-//
-//                    mAdapter.updateProperties(response.body().getData());
-//                    Log.d("MainActivity", "posts loaded from API");
-//
-//                }else {
-//                    int statusCode  = response.code();
-//                }
-//                progressDaialog.dismiss();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<PropertyResponse> call, Throwable t) {
-//                Log.d("MainActivity", "error loading from API");
-//                progressDaialog.dismiss();
-//            }
-//        });
     }
 
     @Override
