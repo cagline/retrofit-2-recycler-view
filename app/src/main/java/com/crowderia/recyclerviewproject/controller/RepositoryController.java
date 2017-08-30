@@ -2,9 +2,9 @@ package com.crowderia.recyclerviewproject.controller;
 
 import android.util.Log;
 
-import com.crowderia.recyclerviewproject.model.Property;
-import com.crowderia.recyclerviewproject.model.PropertyResponse;
-import com.crowderia.recyclerviewproject.service.PropertyService;
+import com.crowderia.recyclerviewproject.model.Repository;
+import com.crowderia.recyclerviewproject.model.RepositoryResponse;
+import com.crowderia.recyclerviewproject.service.RepositoryService;
 import com.crowderia.recyclerviewproject.utilities.ApiUtils;
 
 import java.util.List;
@@ -18,22 +18,22 @@ import retrofit2.http.Query;
  * Created by crowderia on 8/29/17.
  */
 
-public class PropertyController {
+public class RepositoryController {
 
-    private PropertyCallbackListener mListener;
-    private PropertyService mService;
+    private RepositoryCallbackListener mListener;
+    private RepositoryService mService;
 
 
-    public PropertyController(PropertyCallbackListener listener) {
+    public RepositoryController(RepositoryCallbackListener listener) {
         mListener = listener;
-        mService = ApiUtils.getPropertyService();
+        mService = ApiUtils.getRepositoryService();
     }
 
     public void startFetching() {
 
-        mService.getProperties().enqueue(new Callback<PropertyResponse>() {
+        mService.getProperties().enqueue(new Callback<RepositoryResponse>() {
             @Override
-            public void onResponse(Call<PropertyResponse> call, Response<PropertyResponse> response) {
+            public void onResponse(Call<RepositoryResponse> call, Response<RepositoryResponse> response) {
                 if (response.isSuccessful()) {
                     mListener.onFetchProgress(response.body().getData());
                 } else {
@@ -44,19 +44,19 @@ public class PropertyController {
             }
 
             @Override
-            public void onFailure(Call<PropertyResponse> call, Throwable t) {
+            public void onFailure(Call<RepositoryResponse> call, Throwable t) {
                 mListener.onFetchedFailured();
             }
         });
     }
 
-    public interface PropertyCallbackListener {
+    public interface RepositoryCallbackListener {
 
         void onFetchStart();
 
-        void onFetchProgress(Property property);
+        void onFetchProgress(Repository Repository);
 
-        void onFetchProgress(List<Property> properties);
+        void onFetchProgress(List<Repository> properties);
 
         void onFetchComplete();
 

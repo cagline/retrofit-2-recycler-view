@@ -10,12 +10,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 //import com.android.volley.Response;
-import com.crowderia.recyclerviewproject.controller.PropertyController;
-import com.crowderia.recyclerviewproject.model.PropertyAdapter;
+import com.crowderia.recyclerviewproject.controller.RepositoryController;
+import com.crowderia.recyclerviewproject.model.RepositoryAdapter;
 import com.crowderia.recyclerviewproject.R;
-import com.crowderia.recyclerviewproject.model.Property;
-import com.crowderia.recyclerviewproject.model.PropertyResponse;
-import com.crowderia.recyclerviewproject.service.PropertyService;
+import com.crowderia.recyclerviewproject.model.Repository;
+import com.crowderia.recyclerviewproject.model.RepositoryResponse;
+import com.crowderia.recyclerviewproject.service.RepositoryService;
 import com.crowderia.recyclerviewproject.utilities.ApiUtils;
 
 import java.util.ArrayList;
@@ -25,16 +25,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements PropertyController.PropertyCallbackListener {
+public class MainActivity extends AppCompatActivity implements RepositoryController.RepositoryCallbackListener {
 
     private RecyclerView mRecyclerView;
-    private PropertyAdapter mAdapter;
+    private RepositoryAdapter mAdapter;
 
-    private List<Property> listItems;
+    private List<Repository> listItems;
 
-    private PropertyService mService;
+    private RepositoryService mService;
 
-    private PropertyController mPropertyController = new PropertyController(MainActivity.this);
+    private RepositoryController mRepositoryController = new RepositoryController(MainActivity.this);
 
     private ProgressDialog progressDaialog;
 
@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mService = ApiUtils.getPropertyService();
+        mService = ApiUtils.getRepositoryService();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         listItems = new ArrayList<>();
-//        mAdapter = new PropertyAdapter(this, listItems);
-        mAdapter = new PropertyAdapter(this, new ArrayList<Property>(0), new PropertyAdapter.PostItemListener() {
+//        mAdapter = new RepositoryAdapter(this, listItems);
+        mAdapter = new RepositoryAdapter(this, new ArrayList<Repository>(0), new RepositoryAdapter.PostItemListener() {
 
             @Override
             public void onPostClick(long id) {
@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
-        mPropertyController = new PropertyController(MainActivity.this);
+        mRepositoryController = new RepositoryController(MainActivity.this);
         loadRecyclerViewData();
-        mPropertyController.startFetching();
+        mRepositoryController.startFetching();
 
     }
 
@@ -74,19 +74,19 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
         progressDaialog = new ProgressDialog(this);
     }
 
-    // ===== PropertyCallbackListener start =====
+    // ===== RepositoryCallbackListener start =====
     @Override
     public void onFetchStart() {
         progressDaialog.show();
     }
 
     @Override
-    public void onFetchProgress(Property property) {
+    public void onFetchProgress(Repository Repository) {
 
     }
 
     @Override
-    public void onFetchProgress(List<Property> properties) {
+    public void onFetchProgress(List<Repository> properties) {
         mAdapter.updateProperties(properties);
     }
 
@@ -99,6 +99,6 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
     public void onFetchedFailured() {
 
     }
-    // ===== PropertyCallbackListener end =====
+    // ===== RepositoryCallbackListener end =====
 
 }

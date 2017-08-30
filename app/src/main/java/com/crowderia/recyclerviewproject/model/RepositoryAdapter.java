@@ -21,9 +21,9 @@ import java.util.List;
  * Created by crowderia on 8/28/17.
  */
 
-public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHolder> {
+public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.ViewHolder> {
 
-    private List<Property> mItems;
+    private List<Repository> mItems;
     private Context context;
 
     private PostItemListener mItemListener;
@@ -48,15 +48,15 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            Property property = getItem(getAdapterPosition());
-            this.mItemListener.onPostClick(property.getId());
+            Repository Repository = getItem(getAdapterPosition());
+            this.mItemListener.onPostClick(Repository.getId());
             notifyDataSetChanged();
         }
     }
     // ========== ViewHolder end ==========
 
 
-    public PropertyAdapter(Context context, List<Property> mItems, PostItemListener itemListener) {
+    public RepositoryAdapter(Context context, List<Repository> mItems, PostItemListener itemListener) {
         this.mItems = mItems;
         this.context = context;
     }
@@ -70,7 +70,7 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Property listItem = mItems.get(position);
+        final Repository listItem = mItems.get(position);
         holder.textViewHead.setText(listItem.getFullName());
         holder.textViewDesc.setText(listItem.getDescription());
 
@@ -92,12 +92,12 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
     }
 
 
-    public void updateProperties(List<Property> items) {
+    public void updateProperties(List<Repository> items) {
         mItems = items;
         notifyDataSetChanged();
     }
 
-    private Property getItem(int adapterPosition) {
+    private Repository getItem(int adapterPosition) {
         return mItems.get(adapterPosition);
     }
 

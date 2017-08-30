@@ -9,17 +9,17 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PropertyResponse {
+public class RepositoryResponse {
 
     @SerializedName("items")
     @Expose
-    private List<Property> data = null;
+    private List<Repository> data = null;
 
-    public List<Property> getData() {
+    public List<Repository> getData() {
         return data;
     }
 
-    public void setData(List<Property> data) {
+    public void setData(List<Repository> data) {
         this.data = data;
     }
 

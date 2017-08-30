@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 import static com.crowderia.recyclerviewproject.utilities.ApiUtils.IMAGE_URL;
 
-public class Property {
+public class Repository {
 
     @SerializedName("id")
     @Expose
