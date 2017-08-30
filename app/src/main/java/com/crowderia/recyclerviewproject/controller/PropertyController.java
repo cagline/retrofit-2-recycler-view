@@ -20,42 +20,46 @@ import retrofit2.http.Query;
 
 public class PropertyController {
 
-        private PropertyCallbackListener mListener;
-        private PropertyService mService;
+    private PropertyCallbackListener mListener;
+    private PropertyService mService;
 
 
-        public PropertyController(PropertyCallbackListener listener){
-            mListener = listener;
-            mService = ApiUtils.getPropertyService();
-        }
+    public PropertyController(PropertyCallbackListener listener) {
+        mListener = listener;
+        mService = ApiUtils.getPropertyService();
+    }
 
-        public void startFetching(){
+    public void startFetching() {
 
-            mService.getProperties().enqueue(new Callback<PropertyResponse>() {
-                @Override
-                public void onResponse(Call<PropertyResponse> call, Response<PropertyResponse> response) {
-                    if(response.isSuccessful()) {
-                        mListener.onFetchProgress(response.body().getData());
-                    }else {
-                        int statusCode  = response.code();
-                        mListener.onFetchedFailured();
-                     }
-                    mListener.onFetchComplete();
-                }
-
-                @Override
-                public void onFailure(Call<PropertyResponse> call, Throwable t) {
+        mService.getProperties().enqueue(new Callback<PropertyResponse>() {
+            @Override
+            public void onResponse(Call<PropertyResponse> call, Response<PropertyResponse> response) {
+                if (response.isSuccessful()) {
+                    mListener.onFetchProgress(response.body().getData());
+                } else {
+                    int statusCode = response.code();
                     mListener.onFetchedFailured();
                 }
-            });
-        }
+                mListener.onFetchComplete();
+            }
 
-        public interface PropertyCallbackListener {
+            @Override
+            public void onFailure(Call<PropertyResponse> call, Throwable t) {
+                mListener.onFetchedFailured();
+            }
+        });
+    }
 
-            void onFetchStart();
-            void onFetchProgress(Property property);
-            void onFetchProgress(List<Property> properties);
-            void onFetchComplete();
-            void onFetchedFailured();
-        }
+    public interface PropertyCallbackListener {
+
+        void onFetchStart();
+
+        void onFetchProgress(Property property);
+
+        void onFetchProgress(List<Property> properties);
+
+        void onFetchComplete();
+
+        void onFetchedFailured();
+    }
 }

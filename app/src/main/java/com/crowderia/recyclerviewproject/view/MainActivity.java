@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements PropertyController.PropertyCallbackListener{
+public class MainActivity extends AppCompatActivity implements PropertyController.PropertyCallbackListener {
 
     private RecyclerView mRecyclerView;
     private PropertyAdapter mAdapter;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
             public void onPostClick(long id) {
                 Toast.makeText(MainActivity.this, "Post id is" + id, Toast.LENGTH_SHORT).show();
             }
-        });    
+        });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
@@ -63,11 +63,11 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
-        
+
         mPropertyController = new PropertyController(MainActivity.this);
         loadRecyclerViewData();
         mPropertyController.startFetching();
-        
+
     }
 
     private void loadRecyclerViewData() {

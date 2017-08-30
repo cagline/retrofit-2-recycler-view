@@ -23,13 +23,13 @@ import java.util.List;
 
 public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHolder> {
 
-    private List<Property> mItems ;
+    private List<Property> mItems;
     private Context context;
 
     private PostItemListener mItemListener;
 
     // ========== ViewHolder start ==========
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView textViewHead;
         public TextView textViewDesc;
@@ -90,8 +90,6 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
     public int getItemCount() {
         return mItems.size();
     }
-
-
 
 
     public void updateProperties(List<Property> items) {

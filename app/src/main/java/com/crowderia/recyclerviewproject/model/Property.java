@@ -54,6 +54,7 @@ public class Property {
     public void setImage1(String image1) {
         this.image1 = image1;
     }
+
     public String getName() {
         return name;
     }
