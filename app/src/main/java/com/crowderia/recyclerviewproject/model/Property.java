@@ -7,22 +7,28 @@ package com.crowderia.recyclerviewproject.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import static com.crowderia.recyclerviewproject.utilities.Constants.IMAGE_URL;
+import static com.crowderia.recyclerviewproject.utilities.ApiUtils.IMAGE_URL;
 
 public class Property {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("title")
+    @SerializedName("name")
     @Expose
-    private String title;
+    private String name;
     @SerializedName("description")
     @Expose
     private String description;
     @SerializedName("image1")
     @Expose
     private String image1;
+    @SerializedName("full_name")
+    @Expose
+    private String fullName;
+    @SerializedName("owner")
+    @Expose
+    private Owner owner;
 
     public Integer getId() {
         return id;
@@ -30,14 +36,6 @@ public class Property {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDescription() {
@@ -49,12 +47,35 @@ public class Property {
     }
 
     public String getImage1() {
-        return IMAGE_URL.concat(image1);
-//        return image1;
+//        return IMAGE_URL.concat(image1);
+        return image1;
     }
 
     public void setImage1(String image1) {
         this.image1 = image1;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
 }

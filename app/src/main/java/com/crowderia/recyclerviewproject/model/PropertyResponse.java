@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class PropertyResponse {
 
-    @SerializedName("data")
+    @SerializedName("items")
     @Expose
     private List<Property> data = null;
 

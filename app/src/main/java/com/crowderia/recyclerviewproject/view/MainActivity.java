@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
 
     private PropertyController mPropertyController = new PropertyController(MainActivity.this);
 
+    private ProgressDialog progressDaialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +71,13 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
     }
 
     private void loadRecyclerViewData() {
-        final ProgressDialog progressDaialog = new ProgressDialog(this);
-        progressDaialog.setMessage("Loading Data");
-        progressDaialog.show();
-        Log.d("fetching","mPropertyController.startFetching");
+        progressDaialog = new ProgressDialog(this);
     }
 
+    // ===== PropertyCallbackListener start =====
     @Override
     public void onFetchStart() {
-
+        progressDaialog.show();
     }
 
     @Override
@@ -88,11 +88,17 @@ public class MainActivity extends AppCompatActivity implements PropertyControlle
     @Override
     public void onFetchProgress(List<Property> properties) {
         mAdapter.updateProperties(properties);
-
     }
 
     @Override
     public void onFetchComplete() {
-        Log.d("fetching","onFetchComplete");
+        progressDaialog.show();
     }
+
+    @Override
+    public void onFetchedFailured() {
+
+    }
+    // ===== PropertyCallbackListener end =====
+
 }

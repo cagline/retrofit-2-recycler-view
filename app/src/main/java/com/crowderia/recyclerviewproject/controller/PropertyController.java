@@ -5,6 +5,7 @@ import android.util.Log;
 import com.crowderia.recyclerviewproject.model.Property;
 import com.crowderia.recyclerviewproject.model.PropertyResponse;
 import com.crowderia.recyclerviewproject.service.PropertyService;
+import com.crowderia.recyclerviewproject.utilities.ApiUtils;
 
 import java.util.List;
 
@@ -25,28 +26,26 @@ public class PropertyController {
 
         public PropertyController(PropertyCallbackListener listener){
             mListener = listener;
-
+            mService = ApiUtils.getPropertyService();
         }
 
         public void startFetching(){
+
             mService.getProperties().enqueue(new Callback<PropertyResponse>() {
                 @Override
                 public void onResponse(Call<PropertyResponse> call, Response<PropertyResponse> response) {
                     if(response.isSuccessful()) {
-
-//                        mAdapter.updateProperties(response.body().getData());
-                        Log.d("MainActivity", "posts loaded from API");
                         mListener.onFetchProgress(response.body().getData());
-
                     }else {
                         int statusCode  = response.code();
-                    }
+                        mListener.onFetchedFailured();
+                     }
                     mListener.onFetchComplete();
                 }
 
                 @Override
                 public void onFailure(Call<PropertyResponse> call, Throwable t) {
-                    mListener.onFetchComplete();
+                    mListener.onFetchedFailured();
                 }
             });
         }
@@ -57,5 +56,6 @@ public class PropertyController {
             void onFetchProgress(Property property);
             void onFetchProgress(List<Property> properties);
             void onFetchComplete();
+            void onFetchedFailured();
         }
 }

@@ -8,7 +8,8 @@ import com.crowderia.recyclerviewproject.service.RetrofitClient;
  */
 
 public class ApiUtils {
-    public static final String BASE_URL = "http://api.grt-property.lk";
+    public static final String BASE_URL = "https://api.github.com";
+    public static final String IMAGE_URL = "http://back-office.grt-property.lk/storage/app/";
 
     public static PropertyService getPropertyService() {
         return RetrofitClient.getClient(BASE_URL).create(PropertyService.class);

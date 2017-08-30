@@ -14,9 +14,9 @@ import retrofit2.http.Query;
 
 public interface PropertyService {
 
-    @GET("/api/houses")
+    @GET("/search/repositories?q=a")
     Call<PropertyResponse> getProperties();
 
-    @GET("/api/houses/{id}")
-    Call<PropertyResponse> getProperty(@Query("id") String id);
+    @GET("/search/repositories?q=a")
+    Call<PropertyResponse> getProperty(@Query("q") String id);
 }

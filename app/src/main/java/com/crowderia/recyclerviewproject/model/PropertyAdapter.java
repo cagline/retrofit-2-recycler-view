@@ -71,11 +71,11 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Property listItem = mItems.get(position);
-        holder.textViewHead.setText(listItem.getTitle());
+        holder.textViewHead.setText(listItem.getFullName());
         holder.textViewDesc.setText(listItem.getDescription());
 
         Picasso.with(context)
-                .load(listItem.getImage1())
+                .load(listItem.getOwner().getAvatarUrl())
                 .into(holder.imageView);
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {

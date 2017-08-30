@@ -4,6 +4,8 @@ package com.crowderia.recyclerviewproject.service;
  * Created by crowderia on 8/29/17.
  */
 
+import com.crowderia.recyclerviewproject.utilities.Constants;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
