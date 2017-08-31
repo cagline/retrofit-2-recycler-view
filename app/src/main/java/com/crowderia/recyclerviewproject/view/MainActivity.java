@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
 
     private List<Repository> listItems;
 
-    private RepositoryService mService;
-
     private RepositoryController mRepositoryController = new RepositoryController(MainActivity.this);
 
     private ProgressDialog progressDaialog;
@@ -42,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mService = ApiUtils.getRepositoryService();
 
         mRepositoryController = new RepositoryController(MainActivity.this);
         initView();
@@ -84,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
 
     @Override
     public void onFetchProgress(List<Repository> properties) {
+
         mAdapter.updateProperties(properties);
-        Toast.makeText(MainActivity.this, "Get Repository Successfully", Toast.LENGTH_SHORT).show();
     }
 
     @Override
