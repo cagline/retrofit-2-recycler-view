@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
 
     private ProgressDialog progressDaialog;
 
+    private final static String TAG = "Main Activity -";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,29 +72,29 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
     // ===== RepositoryCallbackListener start =====
     @Override
     public void onFetchStart() {
-
         progressDaialog.show();
     }
 
     @Override
-    public void onFetchProgress(Repository Repository) {
+    public void onFetchProgress(Repository property) {
+        Log.d(TAG, property.toString());
     }
 
     @Override
     public void onFetchProgress(List<Repository> properties) {
-
+        Log.d(TAG, properties.toString());
         mAdapter.updateProperties(properties);
     }
 
     @Override
     public void onFetchComplete() {
-
         progressDaialog.dismiss();
     }
 
     @Override
     public void onFetchedFailured() {
-
+        progressDaialog.dismiss();
+        Toast.makeText(MainActivity.this, "Something whent wrong", Toast.LENGTH_SHORT).show();
     }
     // ===== RepositoryCallbackListener end =====
 
