@@ -45,10 +45,14 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
 
         mService = ApiUtils.getRepositoryService();
 
+        mRepositoryController = new RepositoryController(MainActivity.this);
+        initView();
+        mRepositoryController.startFetching();
+    }
+
+    private void initView(){
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        listItems = new ArrayList<>();
-//        mAdapter = new RepositoryAdapter(this, listItems);
         mAdapter = new RepositoryAdapter(this, new ArrayList<Repository>(0), new RepositoryAdapter.PostItemListener() {
 
             @Override
@@ -64,13 +68,6 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
-        mRepositoryController = new RepositoryController(MainActivity.this);
-        loadRecyclerViewData();
-        mRepositoryController.startFetching();
-
-    }
-
-    private void loadRecyclerViewData() {
         progressDaialog = new ProgressDialog(this);
     }
 
@@ -93,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
 
     @Override
     public void onFetchComplete() {
+
         progressDaialog.dismiss();
     }
 
