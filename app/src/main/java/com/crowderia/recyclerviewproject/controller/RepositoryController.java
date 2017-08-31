@@ -31,6 +31,8 @@ public class RepositoryController {
 
     public void startFetching() {
 
+        mListener.onFetchStart();
+        
         mService.getProperties().enqueue(new Callback<RepositoryResponse>() {
             @Override
             public void onResponse(Call<RepositoryResponse> call, Response<RepositoryResponse> response) {

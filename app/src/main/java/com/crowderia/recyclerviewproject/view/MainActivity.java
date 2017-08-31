@@ -77,22 +77,23 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
     // ===== RepositoryCallbackListener start =====
     @Override
     public void onFetchStart() {
+
         progressDaialog.show();
     }
 
     @Override
     public void onFetchProgress(Repository Repository) {
-
     }
 
     @Override
     public void onFetchProgress(List<Repository> properties) {
         mAdapter.updateProperties(properties);
+        Toast.makeText(MainActivity.this, "Get Repository Successfully", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFetchComplete() {
-        progressDaialog.show();
+        progressDaialog.dismiss();
     }
 
     @Override
