@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
         public TextView textViewHead;
         public TextView textViewDesc;
         public ImageView imageView;
-        public LinearLayout linearLayout;
+        public RelativeLayout linearLayout;
         PostItemListener mItemListener;
 
         public ViewHolder(View itemView) {
@@ -43,7 +44,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
             textViewHead = (TextView) itemView.findViewById(R.id.textViewHead);
             textViewDesc = (TextView) itemView.findViewById(R.id.textViewDesc);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
+            linearLayout = (RelativeLayout) itemView.findViewById(R.id.linearLayout);
         }
 
         @Override

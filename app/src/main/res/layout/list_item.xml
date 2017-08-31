@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -9,36 +9,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:padding="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewHead"
-                android:text="Heading"
+            <RelativeLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-            <TextView
-                android:id="@+id/textViewDesc"
-                android:text="Description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:padding="16dp">
 
             <ImageView
                 android:id="@+id/imageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="16dp"
+                android:src="@mipmap/ic_launcher" />
+                <!--android:adjustViewBounds="true"-->
+
+            <TextView
+                android:id="@+id/textViewHead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/ic_launcher" />
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/imageView"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:text="Title"
+                android:textSize="10sp" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/textViewDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewHead"
+                android:layout_toRightOf="@+id/imageView"
+                android:text="Description" />
+
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>
