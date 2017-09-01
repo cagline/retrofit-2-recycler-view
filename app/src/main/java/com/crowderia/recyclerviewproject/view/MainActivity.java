@@ -1,12 +1,10 @@
 package com.crowderia.recyclerviewproject.view;
 
 import android.app.ProgressDialog;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,29 +15,23 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 //import com.android.volley.Response;
 import com.crowderia.recyclerviewproject.controller.RepositoryController;
-import com.crowderia.recyclerviewproject.model.RepositoryAdapter;
+import com.crowderia.recyclerviewproject.utilities.CheckNetwork;
+import com.crowderia.recyclerviewproject.view.adapter.RepositoryAdapter;
 import com.crowderia.recyclerviewproject.R;
 import com.crowderia.recyclerviewproject.model.Repository;
-import com.crowderia.recyclerviewproject.model.RepositoryResponse;
-import com.crowderia.recyclerviewproject.service.RepositoryService;
-import com.crowderia.recyclerviewproject.utilities.ApiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class MainActivity extends AppCompatActivity implements RepositoryController.RepositoryCallbackListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements RepositoryController.RepositoryCallbackListener, NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mRecyclerView;
     private RepositoryAdapter mAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private List<Repository> listItems;
 
@@ -55,12 +47,23 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
         setContentView(R.layout.activity_main);
 
         mRepositoryController = new RepositoryController(MainActivity.this);
+        checkNetwork();
         initView();
-        initNaviView();
+        initNavigationView();
         mRepositoryController.startFetching();
     }
 
-    private void initNaviView() {
+    private void checkNetwork() {
+        if(!CheckNetwork.isInternetAvailable(this))
+        {
+            Toast.makeText(this,"No Internet Connection", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Init navigation view
+     */
+    private void initNavigationView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void initView(){
@@ -100,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
     @Override
     public void onFetchStart() {
         progressDaialog.show();
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
@@ -116,11 +122,14 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
     @Override
     public void onFetchComplete() {
         progressDaialog.dismiss();
+        swipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override
     public void onFetchedFailured() {
         progressDaialog.dismiss();
+        swipeRefreshLayout.setRefreshing(false);
         Toast.makeText(MainActivity.this, "Something whent wrong", Toast.LENGTH_SHORT).show();
     }
     // ===== RepositoryCallbackListener end =====
@@ -183,4 +192,9 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
         return true;
     }
 
+    @Override
+    public void onRefresh() {
+        Log.d(TAG,"onRefresh");
+        mRepositoryController.startFetching();
+    }
 }
