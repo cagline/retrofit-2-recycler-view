@@ -23,7 +23,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="16dp"
                 android:src="@mipmap/ic_launcher" />
-                <!--android:adjustViewBounds="true"-->
 
             <TextView
                 android:id="@+id/textViewHead"
@@ -31,9 +30,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/imageView"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:text="Title"
-                android:textSize="10sp" />
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Title" />
 
             <TextView
                 android:id="@+id/textViewDesc"
@@ -41,6 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewHead"
                 android:layout_toRightOf="@+id/imageView"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:text="Description" />
 
         </RelativeLayout>
