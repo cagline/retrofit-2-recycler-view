@@ -29,11 +29,11 @@ public class RepositoryController {
         mService = ApiUtils.getRepositoryService();
     }
 
-    public void startFetching() {
+    public void startFetching(String searchKey) {
 
         mListener.onFetchStart();
-        
-        mService.getProperties().enqueue(new Callback<RepositoryResponse>() {
+
+        mService.getProperties(searchKey).enqueue(new Callback<RepositoryResponse>() {
             @Override
             public void onResponse(Call<RepositoryResponse> call, Response<RepositoryResponse> response) {
                 if (response.isSuccessful()) {

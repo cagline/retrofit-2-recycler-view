@@ -14,8 +14,8 @@ import retrofit2.http.Query;
 
 public interface RepositoryService {
 
-    @GET("/search/repositories?q=android")
-    Call<RepositoryResponse> getProperties();
+    @GET("/search/repositories")
+    Call<RepositoryResponse> getProperties(@Query("q") String searchKey);
 
     @GET("/search/repos/{full_name}")
     Call<RepositoryResponse> getRepository();

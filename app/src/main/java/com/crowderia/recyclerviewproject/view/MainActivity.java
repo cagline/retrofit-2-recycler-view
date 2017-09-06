@@ -1,6 +1,10 @@
 package com.crowderia.recyclerviewproject.view;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,8 +17,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 //import com.android.volley.Response;
@@ -38,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
     private RepositoryController mRepositoryController = new RepositoryController(MainActivity.this);
 
     private ProgressDialog progressDaialog;
+    private AlertDialog dialogSetSearchKey;
 
     private final static String TAG = "Main Activity -";
 
@@ -50,10 +59,21 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
         checkNetwork();
         initView();
         initNavigationView();
-        mRepositoryController.startFetching();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String searchKey= preferences.getString("SEARCH_KEY", "");
+        Toast.makeText(getApplicationContext(), "SEARCH_KEY -" + searchKey, Toast.LENGTH_SHORT).show();
+
+        mRepositoryController.startFetching(searchKey);
+
     }
 
     private void checkNetwork() {
+
+//        if (PermissionUtil.checkSelfPermission(this,"INTERNET")){
+//            PermissionUtil.requestPermissions(this,"INTERNET");
+//        }
+
         if(!CheckNetwork.isInternetAvailable(this))
         {
             Toast.makeText(this,"No Internet Connection", Toast.LENGTH_LONG).show();
@@ -99,6 +119,9 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
         mRecyclerView.addItemDecoration(itemDecoration);
 
         progressDaialog = new ProgressDialog(this);
+
+
+
     }
 
     // ===== RepositoryCallbackListener start =====
@@ -161,7 +184,24 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            AlertDialog.Builder builderSetSearchKey = setSaarchKey();
+            dialogSetSearchKey = builderSetSearchKey.create();
+            dialogSetSearchKey.show();
+
+            final Button buttonSave = dialogSetSearchKey.getButton(AlertDialog.BUTTON_POSITIVE);
+            final EditText searchKey = (EditText)dialogSetSearchKey.findViewById(R.id.set_search_key);
+
+            buttonSave.setOnClickListener(new View.OnClickListener() {
+                public void onClick(final View v){
+                    String searchkey = searchKey.getText().toString();
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("SEARCH_KEY", searchkey);
+                    editor.apply();
+                    dialogSetSearchKey.dismiss();
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);
@@ -195,6 +235,36 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
     @Override
     public void onRefresh() {
         Log.d(TAG,"onRefresh");
-        mRepositoryController.startFetching();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String searchKey= preferences.getString("SEARCH_KEY", "");
+        mRepositoryController.startFetching(searchKey);
+    }
+
+    public AlertDialog.Builder setSaarchKey() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+//        LayoutInflater inflater = this.getLayoutInflater();
+        LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        final View view = inflater.inflate(R.layout.dialog_search_key, null);
+        builder.setTitle(getResources().getString(R.string.action_search_key));
+        builder.setView(view)
+                // Add action buttons
+                .setPositiveButton(R.string.action_save, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("save",dialog.toString()+"-"+id);
+
+                    }
+                })
+                .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("cancel",dialog.toString()+"-"+id);
+                    }
+                });
+
+        return builder;
     }
 }
