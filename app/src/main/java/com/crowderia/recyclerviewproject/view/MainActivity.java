@@ -2,6 +2,9 @@ package com.crowderia.recyclerviewproject.view;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -15,14 +18,20 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.android.volley.Response;
@@ -61,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
         initNavigationView();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String searchKey= preferences.getString("SEARCH_KEY", "");
+        String searchKey= preferences.getString("SEARCH_KEY", "Android");
         Toast.makeText(getApplicationContext(), "SEARCH_KEY -" + searchKey, Toast.LENGTH_SHORT).show();
 
         mRepositoryController.startFetching(searchKey);
@@ -69,11 +78,9 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
     }
 
     private void checkNetwork() {
-
 //        if (PermissionUtil.checkSelfPermission(this,"INTERNET")){
 //            PermissionUtil.requestPermissions(this,"INTERNET");
 //        }
-
         if(!CheckNetwork.isInternetAvailable(this))
         {
             Toast.makeText(this,"No Internet Connection", Toast.LENGTH_LONG).show();
@@ -119,9 +126,6 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
         mRecyclerView.addItemDecoration(itemDecoration);
 
         progressDaialog = new ProgressDialog(this);
-
-
-
     }
 
     // ===== RepositoryCallbackListener start =====
@@ -170,8 +174,32 @@ public class MainActivity extends AppCompatActivity implements RepositoryControl
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navi_drawer, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        final EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                String searchKey = searchEditText.getText().toString().trim();
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    mRepositoryController.startFetching(searchKey);
+                }
+
+                InputMethodManager in = (InputMethodManager)getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+                // searchEditText.clearFocus(); not working forcuse again
+                searchView.clearFocus();
+                return false;
+            }
+        });
+
         return true;
     }
 
